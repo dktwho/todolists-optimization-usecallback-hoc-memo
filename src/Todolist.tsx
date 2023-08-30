@@ -26,9 +26,9 @@ type PropsType = {
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
 }
 
-export const  Todolist = memo ((props: PropsType) => {
+export const Todolist = memo((props: PropsType) => {
     console.log('Todolist')
-    const addTask = useCallback( (title: string) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
     }, [props.addTask, props.id])
 
@@ -39,11 +39,7 @@ export const  Todolist = memo ((props: PropsType) => {
         props.changeTodolistTitle(props.id, title);
     }
 
-
-
-
     let tasks = props.tasks
-
 
     if (props.filter === "active") {
         tasks = tasks.filter(t => !t.isDone);
@@ -52,14 +48,14 @@ export const  Todolist = memo ((props: PropsType) => {
         tasks = tasks.filter(t => t.isDone);
     }
 
-    const onAllClickHandler = () => props.changeFilter("all", props.id);
-    const onActiveClickHandler = () => props.changeFilter("active", props.id);
-    const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
+    const onAllClickHandler = useCallback(() => props.changeFilter("all", props.id), [props.changeFilter, props.id])
+    const onActiveClickHandler = useCallback(() => props.changeFilter("active", props.id), [props.changeFilter, props.id])
+    const onCompletedClickHandler = useCallback(() => props.changeFilter("completed", props.id), [props.changeFilter, props.id])
 
     return <div>
-        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
+        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}>
-                <Delete />
+                <Delete/>
             </IconButton>
         </h3>
         <AddItemForm addItem={addTask}/>
@@ -83,30 +79,37 @@ export const  Todolist = memo ((props: PropsType) => {
                             onChange={onChangeHandler}
                         />
 
-                        <EditableSpan value={t.title} onChange={onTitleChangeHandler} />
+                        <EditableSpan value={t.title} onChange={onTitleChangeHandler}/>
                         <IconButton onClick={onClickHandler}>
-                            <Delete />
+                            <Delete/>
                         </IconButton>
                     </div>
                 })
             }
         </div>
-        <div style={{ paddingTop: "10px"}}>
-            <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
-                    onClick={onAllClickHandler}
-                    color={'inherit'}
-            >All
-            </Button>
-            <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
-                    onClick={onActiveClickHandler}
-                    color={'primary'}>Active
-            </Button>
-            <Button variant={props.filter === 'completed' ? 'outlined' : 'text'}
-                    onClick={onCompletedClickHandler}
-                    color={'secondary'}>Completed
-            </Button>
+        <div style={{paddingTop: "10px"}}>
+            <ButtonWithMemo onClick={onAllClickHandler} color={'inherit'}
+                            variant={props.filter === 'all' ? 'outlined' : 'text'} title={'All'}/>
+            <ButtonWithMemo onClick={onActiveClickHandler} color={'primary'}
+                            variant={props.filter === 'active' ? 'outlined' : 'text'} title={'Active'}/>
+            <ButtonWithMemo onClick={onCompletedClickHandler} color={'secondary'}
+                            variant={props.filter === 'completed' ? 'outlined' : 'text'} title={'Completed'}/>
         </div>
     </div>
 })
 
-
+export type ButtonPropsType = {
+    title: string
+    color: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
+    variant: 'text' | 'outlined' | 'contained'
+    onClick: () => void
+}
+const ButtonWithMemo = memo ((props: ButtonPropsType) => {
+    return (
+        <Button variant={props.variant}
+                onClick={props.onClick}
+                color={props.color}
+        >{props.title}
+        </Button>
+    )
+})
