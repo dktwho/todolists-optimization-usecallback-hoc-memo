@@ -62,10 +62,10 @@ export const Todolist = memo((props: PropsType) => {
             {
                 tasks.map(t => {
                     const onClickHandler = () => props.removeTask(t.id, props.id)
-                    const onChangeHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
+                    const onChangeHandler =  (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
                         props.changeTaskStatus(t.id, newIsDoneValue, props.id);
-                    }, [])
+                    }
                     const onTitleChangeHandler = (newValue: string) => {
                         props.changeTaskTitle(t.id, newValue, props.id);
                     }
