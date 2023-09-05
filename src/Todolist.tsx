@@ -1,8 +1,8 @@
-import React, {ChangeEvent, memo, useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {Task} from "./Task";
 
@@ -28,7 +28,6 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
-    console.log('Todolist')
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
     }, [props.addTask, props.id])
@@ -52,11 +51,11 @@ export const Todolist = memo((props: PropsType) => {
     const onActiveClickHandler = useCallback(() => props.changeFilter("active", props.id), [props.changeFilter, props.id])
     const onCompletedClickHandler = useCallback(() => props.changeFilter("completed", props.id), [props.changeFilter, props.id])
 
-    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.id, props.removeTask ])
+    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.id, props.removeTask])
 
     const changeTaskStatus = useCallback((taskId: string, newIsDoneValue: boolean) => {
         props.changeTaskStatus(taskId, newIsDoneValue, props.id);
-    }, [props.id, props.changeTaskStatus ])
+    }, [props.id, props.changeTaskStatus])
     const changeTaskTitle = useCallback((taskId: string, newValue: string) => {
         props.changeTaskTitle(taskId, newValue, props.id);
     }, [props.id, props.changeTaskTitle])
