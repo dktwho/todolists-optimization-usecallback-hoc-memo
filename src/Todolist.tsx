@@ -27,6 +27,7 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
+    console.log('Todolist')
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
     }, [props.addTask, props.id])
@@ -61,7 +62,7 @@ export const Todolist = memo((props: PropsType) => {
             {
                 tasks.map(t => {
                     const onClickHandler = () => props.removeTask(t.id, props.id)
-                    const onChangeHandler =  (e: ChangeEvent<HTMLInputElement>) => {
+                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
                         props.changeTaskStatus(t.id, newIsDoneValue, props.id);
                     }
@@ -92,7 +93,6 @@ export const Todolist = memo((props: PropsType) => {
                             variant={props.filter === 'active' ? 'outlined' : 'text'} title={'Active'}/>
             <ButtonWithMemo onClick={onCompletedClickHandler} color={'secondary'}
                             variant={props.filter === 'completed' ? 'outlined' : 'text'} title={'Completed'}/>
-
         </div>
     </div>
 })
@@ -103,7 +103,7 @@ export type ButtonPropsType = {
     variant: 'text' | 'outlined' | 'contained'
     onClick: () => void
 }
-const ButtonWithMemo = memo ((props: ButtonPropsType) => {
+const ButtonWithMemo = memo((props: ButtonPropsType) => {
     return (
         <Button variant={props.variant}
                 onClick={props.onClick}
